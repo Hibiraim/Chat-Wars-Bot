@@ -270,7 +270,7 @@ def queue_worker():
                     arena_delay = False
                 lt_info = time()
                 curhour = datetime.now(tz).hour
-                if 9 <= curhour <= 23:
+                if 6 <= curhour <= 23:
                     get_info_diff = random.randint(420, 900)
                 else:
                     get_info_diff = random.randint(600, 900)
@@ -431,23 +431,23 @@ def parse_text(text, username, message_id):
         elif 'Ты пошел строить:' in text:
             log("Ушли строить")
             lt_info = time()
-            get_info_diff = random.randint(400, 500)
+            get_info_diff = random.randint(320, 480)
 
         elif 'Ты отправился искать приключения в пещеру' in text:
             log("Ушли в пещеру")
             lt_info = time()
-            get_info_diff = random.randint(400, 500)
+            get_info_diff = random.randint(440, 600)
             endurance -= 2
 
         elif 'Ты отправился искать приключения в лес' in text:
             log("Ушли в лес")
             lt_info = time()
-            get_info_diff = random.randint(400, 500)
+            get_info_diff = random.randint(360, 520)
             endurance -= 1
 
         elif 'Ищем соперника. Пока соперник не найден' in text:
             lt_info = time()
-            get_info_diff = random.randint(900, 1200)
+            get_info_diff = random.randint(700, 1070)
             gold -= 5
 
         elif 'Добро пожаловать на арену!' in text:
@@ -531,17 +531,17 @@ def parse_text(text, username, message_id):
                 if not build_enabled:
                     log('на стройку нам не нужно')
                     curhour = datetime.now(tz).hour
-                    if not arena_enabled or arena_delay or curhour > 23 or curhour < 8:
+                    if not arena_enabled or arena_delay or curhour > 23 or curhour < 10:
                         log('на арену тоже не нужно')
                         if int(endurancetop) - int(endurance) >= 4:
                             # минут за 35-45 до битвы имеет смысл выйти из спячки
-                            sleeping = time_to_war * 60 - 60 * random.randint(35, 45)
+                            sleeping = time_to_war * 60 - 60 * random.randint(15, 31)
                             log('выносливости мало, можно и подремать до боя {0} минут'.format(int(sleeping / 60)))
                             lt_info = time()
                             get_info_diff = sleeping
                             return
                     elif gold < 5 and endurance == 0 and time_to_war > 60:
-                        sleeping = 60 * random.randint(30, 40)
+                        sleeping = 60 * random.randint(32, 53)
                         log('выносливости нет, денег нет, можно и подремать до боя {0} минут'.format(int(sleeping / 60)))
                         lt_info = time()
                         get_info_diff = sleeping
@@ -562,7 +562,7 @@ def parse_text(text, username, message_id):
 
                 elif arena_enabled and not arena_delay and gold >= 5 and not arena_running:
                     curhour = datetime.now(tz).hour
-                    if 9 <= curhour <= 23:
+                    if 10 <= curhour <= 23:
                         action_list.append(orders['castle_menu'])
                         action_list.append('📯Арена')
                     else:
@@ -591,7 +591,7 @@ def parse_text(text, username, message_id):
             arena_running = True #на случай, если арена запущена руками
             lt_arena = time()
             lt_info = time()
-            get_info_diff = random.randint(400, 500)
+            get_info_diff = random.randint(400, 600)
             attack_chosen = arena_attack[random.randint(0, 2)]
             cover_chosen = arena_cover[random.randint(0, 2)]
             log('Атака: {0}, Защита: {1}'.format(attack_chosen, cover_chosen))
@@ -736,7 +736,7 @@ def parse_text(text, username, message_id):
                 arena_enabled = True
                 write_config()
                 lt_info = time()
-                get_info_diff = random.randint(400, 500)
+                get_info_diff = random.randint(400, 600)
                 send_msg(pref, msg_receiver, 'Арена успешно включена')
                 log('Арена успешно включена, скоро пойдем бить морды')
             elif text == '#disable_arena':
